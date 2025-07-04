@@ -62,9 +62,8 @@ server:
     root-hints: "C:\Program Files\Unbound\root.hints"
     auto-trust-anchor-file: "C:\Program Files\Unbound\root.key"
 
-    hide-identity: yes
     hide-version: yes
-    identity: "unbound"
+    identity: "unbound-win"
 
     harden-glue: yes
     harden-dnssec-stripped: yes
@@ -102,6 +101,7 @@ server:
     private-address: 10.0.0.0/8
     private-address: fd00::/8
     private-address: fe80::/10
+    # Ensure no reverse queries to non-public IP ranges (RFC6303 4.2)
     private-address: 192.0.2.0/24
     private-address: 198.51.100.0/24
     private-address: 203.0.113.0/24
