@@ -63,17 +63,17 @@ server:
     auto-trust-anchor-file: "C:\Program Files\Unbound\root.key"
 
     hide-version: yes
-    identity: "unbound-win"
+    identity: ""
 
     harden-glue: yes
     harden-dnssec-stripped: yes
-    harden-algo-downgrade: yes
+    harden-algo-downgrade: no
     harden-short-bufsize: yes
 
     edns-buffer-size: 1232
-    prefetch: yes
-    prefetch-key: yes
-    serve-expired: yes
+    prefetch: no
+    prefetch-key: no
+    serve-expired: no
     rrset-roundrobin: yes
     qname-minimisation: yes
     minimal-responses: yes
@@ -85,15 +85,15 @@ server:
     infra-cache-slabs: 4
     key-cache-slabs: 4
 
-    num-threads: 1
-    num-queries-per-thread: 425
-    outgoing-range: 950
-    outgoing-num-tcp: 25
-    incoming-num-tcp: 90
-    tcp-idle-timeout: 1024
+    num-threads: 2
+    num-queries-per-thread: 200
+    outgoing-range: 400
+    outgoing-num-tcp: 10
+    incoming-num-tcp: 10
+    tcp-idle-timeout: 30000
     so-rcvbuf: 4m
     so-sndbuf: 4m
-    so-reuseport: yes
+    #so-reuseport: yes 
 
     private-address: 192.168.0.0/16
     private-address: 169.254.0.0/16
@@ -101,6 +101,7 @@ server:
     private-address: 10.0.0.0/8
     private-address: fd00::/8
     private-address: fe80::/10
+
     # Ensure no reverse queries to non-public IP ranges (RFC6303 4.2)
     private-address: 192.0.2.0/24
     private-address: 198.51.100.0/24
@@ -108,7 +109,6 @@ server:
     private-address: 255.255.255.255/32
     private-address: 2001:db8::/32
 
-    do-daemonize: no
 </pre>
 💡 Note: If port 53 is already in use (e.g., by Pi-hole), change it to another port and reflect that in your DNS setup later.
 
