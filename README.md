@@ -19,9 +19,9 @@ The default install location is:
 🌐 2. Download Root Hints File
 The root.hints file is a list of root DNS server IP addresses used by Unbound to start recursive DNS resolution from scratch.
 📥 To download:
-<pre>
-https://www.internic.net/domain/named.root
-</pre>
+```
+    https://www.internic.net/domain/named.root
+```
 Save the file as root.hints
 Move it to:
 <pre>
@@ -37,20 +37,22 @@ Open an elevated Command Prompt (Run as Administrator), and go to:
 cd "C:\Program Files\Unbound"
 </pre>
 and run:
-<pre>
+```
 unbound-anchor.exe -a "C:\Program Files\Unbound\root.key"
-</pre>
+```
 This generates root.key in the Unbound folder.
 
 
 ⚙️ 4. Modify service.conf Configuration File
 Open the C:\Program Files\Unbound\service.conf file in your preferred editor (e.g., Notepad). Replace its contents with the following:
-<pre>
+```
 server:
 
-    verbosity: 0
+    # Basic setup
+    verbosity: 1
     interface: 0.0.0.0
     port: 53
+    access-control: 127.0.0.0/8 allow
     access-control: 192.168.1.0/16 allow
 
     do-ip4: yes
@@ -59,71 +61,90 @@ server:
     do-udp: yes
     do-tcp: yes
 
+    # Trust anchors and root servers
     root-hints: "C:\Program Files\Unbound\root.hints"
     auto-trust-anchor-file: "C:\Program Files\Unbound\root.key"
 
+    # Security & Privacy
     hide-version: yes
     identity: ""
-
+    hide-identity: yes
     harden-glue: yes
     harden-dnssec-stripped: yes
-    harden-algo-downgrade: no
+    harden-algo-downgrade: yes
     harden-short-bufsize: yes
 
+    # EDNS & Buffer size (reduce fragmentation issues)
     edns-buffer-size: 1232
-    prefetch: no
-    prefetch-key: no
-    serve-expired: no
-    rrset-roundrobin: yes
-    qname-minimisation: yes
-    minimal-responses: yes
+    max-udp-size: 1232
 
-    msg-cache-size: 50m
-    rrset-cache-size: 100m
+    # Prefetch to reduce future latency
+    prefetch: yes
+    prefetch-key: yes
+    serve-expired: yes
+    serve-expired-ttl: 3600
+    serve-expired-client-timeout: 1800
+
+    # Caching performance
+    msg-cache-size: 100m
+    rrset-cache-size: 200m
+    key-cache-size: 64m
     msg-cache-slabs: 4
     rrset-cache-slabs: 4
     infra-cache-slabs: 4
     key-cache-slabs: 4
 
+    # Threading - only use 2 cores
     num-threads: 2
-    num-queries-per-thread: 200
-    outgoing-range: 400
-    outgoing-num-tcp: 10
-    incoming-num-tcp: 10
-    tcp-idle-timeout: 30000
+    num-queries-per-thread: 512
+    outgoing-range: 1024
+    outgoing-num-tcp: 20
+    incoming-num-tcp: 50
+    tcp-idle-timeout: 300
     so-rcvbuf: 4m
     so-sndbuf: 4m
-    #so-reuseport: yes 
 
+    # Use this only if you're running multiple Unbound instances (Linux)
+    # so-reuseport: no
+
+    # Performance features
+    rrset-roundrobin: yes
+    minimal-responses: yes
+    qname-minimisation: yes
+
+    # Prevent DNS leaks via private address space
+    private-address: 10.0.0.0/8
+    private-address: 172.16.0.0/12
     private-address: 192.168.0.0/16
     private-address: 169.254.0.0/16
-    private-address: 172.16.0.0/12
-    private-address: 10.0.0.0/8
     private-address: fd00::/8
     private-address: fe80::/10
-
-    # Ensure no reverse queries to non-public IP ranges (RFC6303 4.2)
     private-address: 192.0.2.0/24
     private-address: 198.51.100.0/24
     private-address: 203.0.113.0/24
     private-address: 255.255.255.255/32
     private-address: 2001:db8::/32
 
-</pre>
+    # Logging (optional, reduce for lower I/O)
+    logfile: "C:\Program Files\Unbound\unbound.log"
+```
 💡 Note: If port 53 is already in use (e.g., by Pi-hole), change it to another port and reflect that in your DNS setup later.
 
 
 🔁 5. Restart Unbound Service
 Open an elevated Command Prompt and run:
-<pre>
+```
 net stop Unbound
+```
+then
+```
 net start Unbound
-</pre>
+```
 
 If Unbound fails to start, check the config with:
-<pre>
+```
 unbound-checkconf "C:\Program Files\Unbound\service.conf"
-</pre>
+```
 
 
 🧪 6. Test DNS Resolution
@@ -133,8 +154,17 @@ nslookup google.com 127.0.0.1
 </pre>
 If Unbound is working correctly, it will return the IP address of google.com.
 
+🧪 7. Test DNSSEC 
+Go to:
+```
+https://dnscheck.tools/
+```
+or
+```
+https://www.cloudflare.com/ssl/encrypted-sni/
+```
 
-🌐 7. Integrate Unbound with Router or Pi-hole (if available)
+🌐 8. Integrate Unbound with Router or Pi-hole (if available)
 You can now point your router or Pi-hole to your Unbound server as the DNS resolver.
 
 Example:
@@ -144,7 +174,7 @@ or
 If you don't use Pi-Hole, you can just put the Unbound server IP into your DNS IP in your router.
 
 
-🔄 8. Restart Pi-hole
+🔄 9. Restart Pi-hole
 Restart Pi-hole’s DNS resolver or reboot the device to apply the changes.
 
 ✅ Done!
