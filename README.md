@@ -33,9 +33,9 @@ C:\Program Files\Unbound\
 The root.key file is used by Unbound to validate DNSSEC signatures from the root zone.
 🛠 Steps:
 Open an elevated Command Prompt (Run as Administrator), and go to:
-<pre>
+```
 cd "C:\Program Files\Unbound"
-</pre>
+```
 and run:
 ```
 unbound-anchor.exe -a "C:\Program Files\Unbound\root.key"
