@@ -82,7 +82,7 @@ server:
     prefetch: yes
     prefetch-key: yes
     serve-expired: yes
-    serve-expired-ttl: 3600
+    serve-expired-ttl: 1800
     serve-expired-client-timeout: 1800
 
     # Caching performance
@@ -96,11 +96,11 @@ server:
 
     # Threading - only use 2 cores
     num-threads: 2
-    num-queries-per-thread: 512
-    outgoing-range: 1024
-    outgoing-num-tcp: 20
-    incoming-num-tcp: 50
-    tcp-idle-timeout: 300
+    num-queries-per-thread: 256
+    outgoing-range: 512
+    outgoing-num-tcp: 40
+    incoming-num-tcp: 60
+    tcp-idle-timeout: 600
     so-rcvbuf: 4m
     so-sndbuf: 4m
 
@@ -127,6 +127,7 @@ server:
 
     # Logging (optional, reduce for lower I/O)
     logfile: "C:\Program Files\Unbound\unbound.log"
+
 ```
 💡 Note: If port 53 is already in use (e.g., by Pi-hole), change it to another port and reflect that in your DNS setup later.
 
