@@ -10,8 +10,8 @@ This setup was tested on:
 
 📥 1. Download Unbound
 Install the latest Windows version:
-🔗 Unbound Setup 1.23.0 
-https://www.nlnetlabs.nl/downloads/unbound/unbound_setup_1.23.0.exe
+🔗 Unbound Setup 
+https://www.nlnetlabs.nl/projects/unbound/download/
 The default install location is:
 <pre> C:\Program Files\Unbound\ </pre>
 
