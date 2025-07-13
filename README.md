@@ -187,8 +187,8 @@ server:
 
     # Threading - only use 2 cores
     num-threads: 2
-    num-queries-per-thread: 256
-    outgoing-range: 512
+    num-queries-per-thread: 225
+    outgoing-range: 452
     outgoing-num-tcp: 40
     incoming-num-tcp: 60
     tcp-idle-timeout: 600
