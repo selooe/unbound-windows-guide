@@ -276,20 +276,20 @@ or
 https://www.cloudflare.com/ssl/encrypted-sni/
 ```
 
-🌐 8. Integrate Unbound with Router or Pi-hole (if available)
-You can now point your router or Pi-hole to your Unbound server as the DNS resolver.
+🌐 8. Integrate Unbound with Router, Pi-hole (if available), or Install Locally on Your Laptop
 
 Example:
-If your Unbound server IP is 192.168.1.252 and port is 53, then in Pi-hole DNS settings, set:
-Custom DNS: 192.168.1.252#53
+If your Unbound server IP is `192.168.1.252` and it runs on port `53`:
 
-or
+Using Pi-hole:
+  Go to Pi-hole's DNS settings and enter `192.168.1.252#53` in the custom DNS field.
 
-If you don't use Pi-Hole, you can just put the Unbound server IP into your DNS IP in your router.
+Without Pi-hole (Router only):
+  Simply set your router’s DNS to point to `192.168.1.252`.
 
-
-🔄 9. Restart Pi-hole
-Restart Pi-hole’s DNS resolver or reboot the device to apply the changes.
+Installed on a Laptop:
+  If you install Unbound locally on your laptop, it can protect your DNS traffic when connected to public Wi-Fi.
+  Set your DNS to `127.0.0.1` to route queries through your local Unbound instance.
 
 ✅ Done!
 You now have a fully working Unbound DNS resolver on Windows, acting as a secure and private DNS backend for your Pi-hole or home network. 🎉
