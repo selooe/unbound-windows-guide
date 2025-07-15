@@ -132,6 +132,17 @@ server:
     tls-cert-bundle: "C:\Program Files\Unbound\ca-bundle.crt"
 ```
 UNBOUND - FORWARDING MODE
+
+In Forwarding mode Unbound needs a list of trusted root certificates to verify Cloudflare's TLS cert.
+
+If ca-bundle.crt doesn’t exist, download it from:
+```
+https://curl.se/ca/cacert.pem
+```
+Rename cacert.pem to ca-bundle.crt, then move it to Unbound installation folder:
+```
+C:\Program Files\Unbound\
+```
 ```
 server:
 
@@ -242,7 +253,6 @@ then
 ```
 net start Unbound
 ```
-
 If Unbound fails to start, check the config with:
 ```
 unbound-checkconf "C:\Program Files\Unbound\service.conf"
@@ -272,7 +282,9 @@ You can now point your router or Pi-hole to your Unbound server as the DNS resol
 Example:
 If your Unbound server IP is 192.168.1.252 and port is 53, then in Pi-hole DNS settings, set:
 Custom DNS: 192.168.1.252#53
+
 or
+
 If you don't use Pi-Hole, you can just put the Unbound server IP into your DNS IP in your router.
 
 
