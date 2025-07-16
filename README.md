@@ -46,7 +46,7 @@ This generates root.key in the Unbound folder.
 ⚙️ 4. Modify service.conf Configuration File
 Open the C:\Program Files\Unbound\service.conf file in your preferred editor (e.g., Notepad). Replace its contents with the one of the following config mode:
 
-UNBOUND - RECURSIVE MODE
+UNBOUND - RECURSIVE MODE + DNSSEC ENABLE
 ```
 server:
 
