@@ -131,7 +131,7 @@ server:
     # Required CA bundle for TLS (still safe to include, even if not forwarding)
     tls-cert-bundle: "C:\Program Files\Unbound\ca-bundle.crt"
 ```
-UNBOUND - FORWARDING MODE
+UNBOUND - FORWARDING MODE - DNS Over TLS
 
 In Forwarding mode Unbound needs a list of trusted root certificates to verify Cloudflare's TLS cert.
 
